@@ -1,0 +1,15 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+
+
+  window.addEventListener('submit', function(e) {
+      console.log("submit")
+    e.preventDefault();
+    var input = document.getElementById('input');
+    if (input.value) {
+      socket.emit('chat message', input.value);
+      input.value = '';
+    }
+  });
+</script>

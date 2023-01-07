@@ -1,0 +1,13 @@
+<script>
+socket.on('memory', function(message) {
+    renderMemory(message);
+});
+
+function renderMemory(message){
+    console.log(message)
+}
+</script>
+<form>
+    <input type="text" id="input"/>
+    <input type="submit"/>
+</form>
