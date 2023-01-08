@@ -4,10 +4,87 @@ socket.on('memory', function(message) {
 });
 
 function renderMemory(message){
+  const ctx = document.getElementById('myChart');
+const DATA_COUNT = 7;
+const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
+  const data = {
+  labels: [ // Date Objects
+    chatjs.Utils.newDate(0),
+    chatjs.Utils.newDate(1),
+    chatjs.Utils.newDate(2),
+    chatjs.Utils.newDate(3),
+    chatjs.Utils.newDate(4),
+    chatjs.Utils.newDate(5),
+    chatjs.Utils.newDate(6)
+  ],
+  datasets: [{
+    label: 'My First dataset',
+    backgroundColor: chatjs.Utils.transparentize(chatjs.Utils.CHART_COLORS.red, 0.5),
+    borderColor: chatjs.Utils.CHART_COLORS.red,
+    fill: false,
+    data: chatjs.Utils.numbers(NUMBER_CFG),
+  }, {
+    label: 'My Second dataset',
+    backgroundColor: chatjs.Utils.transparentize(chatjs.Utils.CHART_COLORS.blue, 0.5),
+    borderColor: chatjs.Utils.CHART_COLORS.blue,
+    fill: false,
+    data: chatjs.Utils.numbers(NUMBER_CFG),
+  }, {
+    label: 'Dataset with point data',
+    backgroundColor: chatjs.Utils.transparentize(chatjs.Utils.CHART_COLORS.green, 0.5),
+    borderColor: chatjs.Utils.CHART_COLORS.green,
+    fill: false,
+    data: [{
+      x: chatjs.Utils.newDateString(0),
+      y: chatjs.Utils.rand(0, 100)
+    }, {
+      x: chatjs.Utils.newDateString(5),
+      y: chatjs.Utils.rand(0, 100)
+    }, {
+      x: chatjs.Utils.newDateString(7),
+      y: chatjs.Utils.rand(0, 100)
+    }, {
+      x: chatjs.Utils.newDateString(15),
+      y: chatjs.Utils.rand(0, 100)
+    }],
+  }]
+};
+
+
+const config = {
+  type: 'line',
+  data: data,
+  options: {
+    plugins: {
+      title: {
+        text: 'Chart.js Time Scale',
+        display: true
+      }
+    },
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          // Luxon format string
+          tooltipFormat: 'DD T'
+        },
+        title: {
+          display: true,
+          text: 'Date'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'value'
+        }
+      }
+    },
+  },
+};
+
+     new chatjs.Chart(ctx, config);
     console.log(message)
 }
 </script>
-<form>
-    <input type="text" id="input"/>
-    <input type="submit"/>
-</form>
+  <canvas id="myChart"></canvas>

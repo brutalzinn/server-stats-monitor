@@ -5,10 +5,13 @@ const si = require('systeminformation');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const chatjs = require('chart.js')
 
 app.set('view engine', 'ejs');
 
+
 app.get('/', (req, res) => {
+app.locals.chatjs = chatjs;
   res.render('pages/index')
 });
 
