@@ -1,14 +1,8 @@
 <script>
-socket.on('stats_memory', function(message) {
+socket.on('stats', function(message) {
     renderMemory(message);
-    console.log("mem", message)
+   // renderCPU(message);
 });
-
-// socket.on('stats_cpu', function(message) {
-//     renderCPU(message);
-//         console.log("cpu", message)
-
-// });
 
 
 function renderMemory(message){
@@ -18,10 +12,10 @@ const data = {
   datasets: [{
     label: 'Memória em uso',
     data: message.memory.data,
-    backgroundColor: 'blue',
-    borderColor: 'rgb(75, 192, 192)',
-
-    fill: false,
+    backgroundColor: '#9BD0F5',
+    borderColor: '#36A2EB',
+    color:'#000',
+    fill: true,
     tension: 0.1
   }
   ]
@@ -34,11 +28,13 @@ const config = {
              y:{
               max : message.memory.total
              },
+         x: {
+              type: 'timeseries',
+            }
+
         }
     }
   }
-
-
    let chartStatus = Chart.getChart("memoryCanvas"); // <canvas> id
     if (chartStatus != undefined) {
       chartStatus.destroy();
@@ -49,25 +45,33 @@ const config = {
 
 function renderCPU(message){
   const grapharea  = document.getElementById('cpuCanvas');
-   
-const data = {
+   const data = {
   datasets: [{
-    label: 'CPU em uso',
-    data: message.cpu,
-    backgroundColor: '#0000FF',
-    fill: false,
+    label: 'Cpu em uso',
+    data: message.cpu.data,
+    backgroundColor: '#9BD0F5',
+    borderColor: '#36A2EB',
+    color:'#000',
+    fill: true,
     tension: 0.1
   }
   ]
 };
-    const config = {
+const config = {
     type: 'line',
     data: data,
-    options:  {
-    responsive: true
-    }
-    }
+    options: {
+        scales: {
+             y:{
+              max : message.cpu.total
+             },
+         x: {
+              type: 'timeseries',
+            }
 
+        }
+    }
+  }
    let chartStatus = Chart.getChart("cpuCanvas"); // <canvas> id
     if (chartStatus != undefined) {
       chartStatus.destroy();

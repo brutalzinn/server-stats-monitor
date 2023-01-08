@@ -18,7 +18,10 @@ const statsData =
     available: 0,
     data:[]
   },
-  cpu:[]
+  cpu:{
+    total: 0,
+    data:[]
+  }
 
 }
 
@@ -38,11 +41,12 @@ io.on('connection', (socket) => {
             statsData.memory.available = data.available
             statsData.memory.data.push({x: new Date(), y: data.used })
         })
-        // si.currentLoad().then(data => {
-        //     statsData.cpu.push({x: date.toLocaleString(), y: data.currentLoad })
-        // })
-        socket.emit("stats_memory", statsData);
-      }, 10000)
+        si.currentLoad().then(data => {
+            statsData.cpu.total = data.currentLoad
+            statsData.cpu.data.push({x: new Date(), y: data.currentLoad })
+        })
+        socket.emit("stats", statsData);
+      }, 20000)
 });
   
 
