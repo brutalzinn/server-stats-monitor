@@ -5,47 +5,48 @@ socket.on('memory', function(message) {
 
 function renderMemory(message){
   const ctx = document.getElementById('myChart');
+
 const DATA_COUNT = 7;
 const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
   const data = {
   labels: [ // Date Objects
-    chatjs.Utils.newDate(0),
-    chatjs.Utils.newDate(1),
-    chatjs.Utils.newDate(2),
-    chatjs.Utils.newDate(3),
-    chatjs.Utils.newDate(4),
-    chatjs.Utils.newDate(5),
-    chatjs.Utils.newDate(6)
+    Utils.newDate(0),
+    Utils.newDate(1),
+    Utils.newDate(2),
+    Utils.newDate(3),
+    Utils.newDate(4),
+    Utils.newDate(5),
+    Utils.newDate(6)
   ],
   datasets: [{
     label: 'My First dataset',
-    backgroundColor: chatjs.Utils.transparentize(chatjs.Utils.CHART_COLORS.red, 0.5),
-    borderColor: chatjs.Utils.CHART_COLORS.red,
+    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+    borderColor: Utils.CHART_COLORS.red,
     fill: false,
-    data: chatjs.Utils.numbers(NUMBER_CFG),
+    data: Utils.numbers(NUMBER_CFG),
   }, {
     label: 'My Second dataset',
-    backgroundColor: chatjs.Utils.transparentize(chatjs.Utils.CHART_COLORS.blue, 0.5),
-    borderColor: chatjs.Utils.CHART_COLORS.blue,
+    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+    borderColor: Utils.CHART_COLORS.blue,
     fill: false,
-    data: chatjs.Utils.numbers(NUMBER_CFG),
+    data: Utils.numbers(NUMBER_CFG),
   }, {
     label: 'Dataset with point data',
-    backgroundColor: chatjs.Utils.transparentize(chatjs.Utils.CHART_COLORS.green, 0.5),
-    borderColor: chatjs.Utils.CHART_COLORS.green,
+    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0.5),
+    borderColor: Utils.CHART_COLORS.green,
     fill: false,
     data: [{
-      x: chatjs.Utils.newDateString(0),
-      y: chatjs.Utils.rand(0, 100)
+      x: Utils.newDateString(0),
+      y: Utils.rand(0, 100)
     }, {
-      x: chatjs.Utils.newDateString(5),
-      y: chatjs.Utils.rand(0, 100)
+      x: Utils.newDateString(5),
+      y: Utils.rand(0, 100)
     }, {
-      x: chatjs.Utils.newDateString(7),
-      y: chatjs.Utils.rand(0, 100)
+      x: Utils.newDateString(7),
+      y: Utils.rand(0, 100)
     }, {
-      x: chatjs.Utils.newDateString(15),
-      y: chatjs.Utils.rand(0, 100)
+      x: Utils.newDateString(15),
+      y: Utils.rand(0, 100)
     }],
   }]
 };
@@ -83,7 +84,7 @@ const config = {
   },
 };
 
-     new chatjs.Chart(ctx, config);
+     new Chart(ctx, config);
     console.log(message)
 }
 </script>
