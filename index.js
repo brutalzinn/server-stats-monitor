@@ -6,16 +6,24 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-app.use( express.static(__dirname + '/node_modules/chart.js/dist'));
-
 app.set('view engine', 'ejs');
 
+app.use( express.static(__dirname + '/node_modules/chart.js'));
+
+const statsData = 
+{
+  labels:[],
+  memory:{
+    total: 0,
+    available: 0,
+    data:[]
+  },
+  cpu:[]
+
+}
 
 app.get('/', (req, res) => {
-app.locals.chatjs = chatjs;
-  res.render('pages/index', {
-    root: (__dirname + '/public')
-  });
+  res.render('pages/index')
 });
 
 io.on('connection', (socket) => {
@@ -23,17 +31,17 @@ io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
       console.log('message: ' + msg);
     });
+     
     setInterval(function() {
         si.mem().then(data => {
-            socket.emit("memory", data);
+            statsData.memory.total = data.total
+            statsData.memory.available = data.available
+            statsData.memory.data.push({x: new Date(), y: data.used })
         })
-        si.processes().then(data => {
-            socket.emit("processes", data);
-        })
-        si.dockerInfo().then(data => {
-            // console.log("docker", data)
-      //      socket.emit("processes", data);
-        })
+        // si.currentLoad().then(data => {
+        //     statsData.cpu.push({x: date.toLocaleString(), y: data.currentLoad })
+        // })
+        socket.emit("stats_memory", statsData);
       }, 10000)
 });
   

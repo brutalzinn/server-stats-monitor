@@ -1,91 +1,79 @@
 <script>
-socket.on('memory', function(message) {
+socket.on('stats_memory', function(message) {
     renderMemory(message);
+    console.log("mem", message)
 });
 
+// socket.on('stats_cpu', function(message) {
+//     renderCPU(message);
+//         console.log("cpu", message)
+
+// });
+
+
 function renderMemory(message){
-  const ctx = document.getElementById('myChart');
-
-const DATA_COUNT = 7;
-const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
-  const data = {
-  labels: [ // Date Objects
-    Utils.newDate(0),
-    Utils.newDate(1),
-    Utils.newDate(2),
-    Utils.newDate(3),
-    Utils.newDate(4),
-    Utils.newDate(5),
-    Utils.newDate(6)
-  ],
+  const grapharea  = document.getElementById('memoryCanvas').getContext("2d");
+   
+const data = {
   datasets: [{
-    label: 'My First dataset',
-    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-    borderColor: Utils.CHART_COLORS.red,
+    label: 'Memória em uso',
+    data: message.memory.data,
+    backgroundColor: 'blue',
+    borderColor: 'rgb(75, 192, 192)',
+
     fill: false,
-    data: Utils.numbers(NUMBER_CFG),
-  }, {
-    label: 'My Second dataset',
-    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-    borderColor: Utils.CHART_COLORS.blue,
-    fill: false,
-    data: Utils.numbers(NUMBER_CFG),
-  }, {
-    label: 'Dataset with point data',
-    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0.5),
-    borderColor: Utils.CHART_COLORS.green,
-    fill: false,
-    data: [{
-      x: Utils.newDateString(0),
-      y: Utils.rand(0, 100)
-    }, {
-      x: Utils.newDateString(5),
-      y: Utils.rand(0, 100)
-    }, {
-      x: Utils.newDateString(7),
-      y: Utils.rand(0, 100)
-    }, {
-      x: Utils.newDateString(15),
-      y: Utils.rand(0, 100)
-    }],
-  }]
+    tension: 0.1
+  }
+  ]
 };
-
-
 const config = {
-  type: 'line',
-  data: data,
-  options: {
-    plugins: {
-      title: {
-        text: 'Chart.js Time Scale',
-        display: true
-      }
-    },
-    scales: {
-      x: {
-        type: 'time',
-        time: {
-          // Luxon format string
-          tooltipFormat: 'DD T'
-        },
-        title: {
-          display: true,
-          text: 'Date'
+    type: 'line',
+    data: data,
+    options: {
+        scales: {
+             y:{
+              max : message.memory.total
+             },
         }
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'value'
-        }
-      }
-    },
-  },
-};
+    }
+  }
 
-     new Chart(ctx, config);
-    console.log(message)
+
+   let chartStatus = Chart.getChart("memoryCanvas"); // <canvas> id
+    if (chartStatus != undefined) {
+      chartStatus.destroy();
+    }
+    var memoryCanvas = new Chart(grapharea, config);
+}
+
+
+function renderCPU(message){
+  const grapharea  = document.getElementById('cpuCanvas');
+   
+const data = {
+  datasets: [{
+    label: 'CPU em uso',
+    data: message.cpu,
+    backgroundColor: '#0000FF',
+    fill: false,
+    tension: 0.1
+  }
+  ]
+};
+    const config = {
+    type: 'line',
+    data: data,
+    options:  {
+    responsive: true
+    }
+    }
+
+   let chartStatus = Chart.getChart("cpuCanvas"); // <canvas> id
+    if (chartStatus != undefined) {
+      chartStatus.destroy();
+    }
+    var cpuCanvas = new Chart(grapharea, config);
 }
 </script>
-  <canvas id="myChart"></canvas>
+  <canvas id="memoryCanvas"></canvas>
+  <canvas id="cpuCanvas"></canvas>
